@@ -1,41 +1,85 @@
-//Primera pre entrega Avila
+//Segunda pre entrega Avila
 
-let precioItem;
-let nombreItem;
-let cantidad;
-let nombreUser;
-let total = 0; ///vamos a mostrar el total de la suma de cada item por su cantidad
-let opcion; /// 'si' 'no'
-let ticket = ``;
+const productos = [
+  { nombre: "Harinas", precio: 50 },
+  { nombre: "Galletitas", precio: 100 },
+  { nombre: "Cervezas", precio: 150 },
+  { nombre: "Lacteos", precio: 200 },
+  { nombre: "Gaseosas", precio: 250 },
+];
+let carrito = [];
 
-alert('Bienvenido a su tienda Online!!');
-nombreUser = prompt("Ingrese su nombre!");
+let seleccion = prompt("Hola, desea comprar algún producto?");
 
+while (seleccion != "si" && seleccion != "no") {
+  alert("Por favor ingrese si o no");
+  seleccion = prompt("Hola desea comprar algo si o no");
+}
 
-do {
-    ///pido precio y nombre del item
-    nombreItem = prompt("Ingrese nombre del producto");
-    precioItem = Number(prompt("Ingrese precio"));
+if (seleccion == "si") {
+  alert("A continuación nuestra lista de productos");
+  let todoslosProductos = productos.map(
+    (producto) => producto.nombre + " " + producto.precio + "$"
+  );
+  alert(todoslosProductos.join(" - "));
+} else if (seleccion == "no") {
+  alert("Gracias por venir, hasta pronto!!");
+}
 
+while (seleccion != "no") {
+  let producto = prompt("Agregá un producto a tu carrito");
+  let precio = 0;
 
-    while (precioItem < 0) { ///Mientras el precio este mal le voy a pedir que ingrese otro
-        precioItem = Number(prompt('Precio invalido, ingrese otro'));
+  if (
+    producto == "Harinas" ||
+    producto == "Galletitas" ||
+    producto == "Cervezas" ||
+    producto == "Lacteos" ||
+    producto == "Gaseosas"
+  ) {
+    switch (producto) {
+      case "Harinas":
+        precio = 50;
+        break;
+      case "Galletitas":
+        precio = 100;
+        break;
+      case "Cervezas":
+        precio = 150;
+        break;
+      case "Lacteos":
+        precio = 200;
+        break;
+      case "Gaseosas":
+        precio = 250;
+        break;
+      default:
+        break;
     }
+    let unidades = parseInt(prompt("Cuántas unidades quiere llevar?"));
 
-    cantidad = parseInt(prompt("Ingrese cantidad"));
+    carrito.push({ producto, unidades, precio });
+    console.log(carrito);
+  } else {
+    alert("No tenemos ese producto en stock");
+  }
 
-    while (cantidad <= 0) { ///mientras la cantidad sea menor o igual a 0, le pedimos que la vuelva a ingresar
-        cantidad = parseInt(prompt('Cantidad invalida, ingrese otra'));
-    } 
-    ticket = ticket + `Nombre del producto: ${nombreItem} \n Precio unitario: $${precioItem} \n Cantidad: ${cantidad} \n Subtotal: $${cantidad * precioItem} \n\n`
-    total = total + cantidad * precioItem;
+  seleccion = prompt("Desea comprar algo más?");
 
-    opcion = prompt("Desea comprar otro producto?"); ///le pregunto si desea ingresar otro item, asi vuelvo a iterar o terminar el bucle
+  while (seleccion === "no") {
+    alert("Gracias por su compra! Hasta pronto");
+    carrito.forEach((carritoFinal) => {
+      console.log(
+        `producto: ${carritoFinal.producto}, unidades: ${
+          carritoFinal.unidades
+        }, Total a pagar por producto ${
+          carritoFinal.unidades * carritoFinal.precio
+        }`
+      );
+    });
+    break;
+  }
+}
 
-} while (opcion == 'si');
-
-alert(`${ticket} El total para ${nombreUser} es de: $${total}`);
-//alert('El total para ' + nombreUser + ' es de ' + total);
-
-
-
+const total = carrito.reduce((acc, el) => acc + el.precio * el.unidades, 0);
+console.log(`El total a pagar por su compra es: ${total}`);
